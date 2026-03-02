@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資源發布與展示 - 校園專屬輕資源交換網站</title>
+    <style>
+        /* 引入可畫甜心體，全局字體設置 */
+        @font-face {
+            font-family: 'KeHuaTianXin';
+            src: url('https://cdn.jsdelivr.net/gh/fonts-archive/KeHuaTianXin/KeHuaTianXin.woff2') format('woff2'),
+                 url('https://cdn.jsdelivr.net/gh/fonts-archive/KeHuaTianXin/KeHuaTianXin.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        /* 全局樣式 - 與首頁完全一致的配色和字體 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'KeHuaTianXin', "Microsoft JhengHei", "思源黑體", sans-serif !important;
+        }
+        body {
+            background-color: #f5faf7;
+            background-image: linear-gradient(180deg, #f5faf7 95%, #C1E2C8 100%);
+            color: #333;
+            line-height: 1.8;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        /* 校園漂浮元素 - 與首頁一致，手機端隱藏 */
+        .campus-icon {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .icon1 { top: 20%; left: 3%; width: 50px; height: 50px; }
+        .icon2 { top: 40%; right: 3%; width: 60px; height: 60px; }
+        .icon3 { bottom: 30%; left: 5%; width: 40px; height: 40px; }
+        /* 導航欄 - 與首頁完全一致，頂部固定+鏈接首頁 */
+        nav {
+            background-color: #E5C2D0;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(193, 226, 200, 0.6);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid #C1E2C8;
+        }
+        .nav-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        .nav-logo {
+            flex: 1;
+        }
+        nav h1 {
+            font-size: 1.5rem;
+            color: #7A4A7A;
+            position: relative;
+            padding-left: 0.5rem;
+        }
+        nav h1::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: #C1E2C8;
+            border-radius: 50%;
+            border: 1px solid #7A4A7A;
+        }
+        .nav-main {
+            flex: 0;
+        }
+        .nav-auth {
+            flex: 0;
+            display: flex;
+            gap: 0.8rem;
+        }
+        .nav-btn {
+            color: #7A4A7A;
+            background-color: #C1E2C8;
+            border: 2px solid #7A4A7A;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-block;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background-color: #A8D5B0;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(193, 226, 200, 0.9);
+        }
+        .auth-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+        }
+        /* 頁面標題區 */
+        .page-title {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        .page-title h2 {
+            font-size: 2.5rem;
+            color: #7A4A7A;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 3px rgba(193, 226, 200, 0.7);
+        }
+        .page-title p {
+            font-size: 1.2rem;
+            color: #4A8A57;
+        }
+        /* 核心模塊通用樣式 - 卡片式布局，與首頁功能卡一致 */
+        .resource-module {
+            background-color: #fff;
+            background-image: linear-gradient(0deg, #fff 95%, #e8f5eb 100%);
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(193, 226, 200, 0.4);
+            border-top: 4px solid #C1E2C8;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        .resource-module h3 {
+            font-size: 1.8rem;
+            color: #7A4A7A;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #C1E2C8;
+            display: inline-block;
+        }
+        /* 表單通用樣式 */
+        .resource-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .form-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-item label {
+            font-size: 1.1rem;
+            color: #4A8A57;
+            font-weight: 600;
+        }
+        .form-item input, .form-item select, .form-item textarea {
+            padding: 0.8rem 1rem;
+            border: 2px solid #C1E2C8;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #333;
+            background-color: #fdfefe;
+            outline: none;
+        }
+        .form-item input:focus, .form-item select:focus, .form-item textarea:focus {
+            border-color: #7A4A7A;
+        }
+        .form-item textarea {
+            resize: vertical;
+            min-height: 80px;
+            grid-column: 1 / -1;
+        }
+        .form-submit {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+        }
+        /* 資源列表通用樣式 */
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .resource-item {
+            background-color: #fdfefe;
+            border: 1px solid #C1E2C8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(193, 226, 200, 0.3);
+            transition: all 0.3s ease;
+        }
+        .resource-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(193, 226, 200, 0.4);
+        }
+        .resource-item p {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .resource-item p span {
+            color: #7A4A7A;
+            font-weight: 600;
+        }
+        .contact-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+            border: none;
+        }
+        /* 響應式調整 - 手機端适配 */
+        @media (max-width: 768px) {
+            .campus-icon {
+                display: none;
+            }
+            .nav-wrap {
+                flex-direction: column;
+                gap: 0.8rem;
+                align-items: center;
+            }
+            .nav-logo, .nav-main, .nav-auth {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-auth {
+                justify-content: center;
+            }
+            .page-title h2 {
+                font-size: 2rem;
+            }
+            .resource-module h3 {
+                font-size: 1.5rem;
+            }
+            .resource-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 校園漂浮元素 - 與首頁風格一致 -->
+    <svg class="campus-icon icon1" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 14h-4v4h-2v-4H5v-2h4V7h2v7h4v2z"/></svg>
+    <svg class="campus-icon icon2" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M18 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+    <svg class="campus-icon icon3" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M17 20c-1.1 0-1.99.9-1.99 2S15.9 24 17 24s2-.9 2-2-.9-2-2-2zm-1-7.98c0-1.49-.91-2.73-2.25-3.24.38-.85.57-1.8.57-2.78 0-2.21-1.79-4-4-4s-4 1.79-4 4c0 .98.19 1.93.57 2.78C6.91 9.29 6 10.53 6 12.02V13h12v-.98zm-6-5.02c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>
+
+    <!-- 頂部導航欄 - 鏈接首頁index.html，與首頁布局一致 -->
+    <nav>
+        <div class="container nav-wrap">
+            <div class="nav-logo">
+                <h1>校園專屬輕資源交換網站</h1>
+            </div>
+            <div class="nav-main">
+                <a href="index.html" class="nav-btn">返回首頁</a>
+            </div>
+            <div class="nav-auth">
+                <a href="#" class="nav-btn auth-btn">註冊</a>
+                <a href="#" class="nav-btn auth-btn">登入</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 頁面標題區 -->
+        <section class="page-title">
+            <h2>資源發布與實時展示</h2>
+            <p>在這裡發布你的閒置資源，找到想要的校園好物～</p>
+        </section>
+
+        <!-- 模塊1：閒置文具互借/交換 -->
+        <section class="resource-module">
+            <h3>閒置文具互借 / 交換</h3>
+            <form class="resource-form" id="stationeryForm">
+                <div class="form-item">
+                    <label for="stationeryName">文具名稱</label>
+                    <input type="text" id="stationeryName" required placeholder="例：鋼筆、筆記本、畫板">
+                </div>
+                <div class="form-item">
+                    <label for="stationeryType">文具類型</label>
+                    <select id="stationeryType" required>
+                        <option value="" disabled selected>請選擇類型</option>
+                        <option value="書寫工具">書寫工具</option>
+                        <option value="記錄用品">記錄用品</option>
+                        <option value="繪畫工具">繪畫工具</option>
+                        <option value="文房四寶">文房四寶</option>
+                        <option value="其他文具">其他文具</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="stationeryStatus">文具狀態</label>
+                    <select id="stationeryStatus" required>
+                        <option value="" disabled selected>請選擇狀態</option>
+                        <option value="全新未用">全新未用</option>
+                        <option value="九成新">九成新</option>
+                        <option value="七成新">七成新</option>
+                        <option value="五成新（可用）">五成新（可用）</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="stationeryWay">選擇方式</label>
+                    <select id="stationeryWay" required>
+                        <option value="" disabled selected>請選擇方式</option>
+                        <option value="互借">互借</option>
+                        <option value="交換">交換</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="stationeryLocation">校園地點</label>
+                    <input type="text" id="stationeryLocation" required placeholder="例：教學樓1樓、圖書館門口、食堂旁">
+                </div>
+                <div class="form-item">
+                    <label for="stationeryRemarks">備註</label>
+                    <textarea id="stationeryRemarks" placeholder="補充文具細節、交換/互借要求等"></textarea>
+                </div>
+                <div class="form-item form-submit">
+                    <button type="submit" class="nav-btn">發布文具資源</button>
+                </div>
+            </form>
+            <!-- 文具資源列表 -->
+            <h4 style="color: #4A8A57; margin-bottom: 1rem; font-size: 1.2rem;">實時發布的文具資源</h4>
+            <div class="resource-list" id="stationeryList">
+                <!-- 默認示例 -->
+                <div class="resource-item">
+                    <p><span>文具名稱：</span>鋼筆套裝</p>
+                    <p><span>類型/狀態：</span>書寫工具 / 九成新</p>
+                    <p><span>方式：</span>交換</p>
+                    <p><span>校園地點：</span>教學樓2樓走廊</p>
+                    <button class="nav-btn contact-btn">聯繫對接</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模塊2：精品筆記/學習素材共享 -->
+        <section class="resource-module">
+            <h3>精品筆記 / 學習素材共享</h3>
+            <form class="resource-form" id="noteForm">
+                <div class="form-item">
+                    <label for="noteName">素材名稱</label>
+                    <input type="text" id="noteName" required placeholder="例：高一數學函數筆記、英語單詞整理">
+                </div>
+                <div class="form-item">
+                    <label for="noteSubject">年級 / 科目</label>
+                    <input type="text" id="noteSubject" required placeholder="例：高一數學、高三英語、初中物理">
+                </div>
+                <div class="form-item">
+                    <label for="noteIntro">素材介紹</label>
+                    <input type="text" id="noteIntro" required placeholder="例：詳細整理函數解題技巧、包含考點歸納">
+                </div>
+                <div class="form-item">
+                    <label for="noteLocation">校園地點</label>
+                    <input type="text" id="noteLocation" required placeholder="例：圖書館3樓、教學樓5樓教室">
+                </div>
+                <div class="form-item">
+                    <label for="noteRemarks">備註</label>
+                    <textarea id="noteRemarks" placeholder="補充素材形式（電子/紙質）、共享方式等"></textarea>
+                </div>
+                <div class="form-item form-submit">
+                    <button type="submit" class="nav-btn">發布學習素材</button>
+                </div>
+            </form>
+            <!-- 學習素材列表 -->
+            <h4 style="color: #4A8A57; margin-bottom: 1rem; font-size: 1.2rem;">實時發布的學習素材</h4>
+            <div class="resource-list" id="noteList">
+                <!-- 默認示例 -->
+                <div class="resource-item">
+                    <p><span>素材名稱：</span>高一數學函數解題筆記</p>
+                    <p><span>年級/科目：</span>高一數學</p>
+                    <p><span>介紹：</span>詳細整理函數考點和解題技巧</p>
+                    <p><span>校園地點：</span>圖書館3樓閱覽室</p>
+                    <button class="nav-btn contact-btn">聯繫對接</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模塊3：輕文創交換/展示 -->
+        <section class="resource-module">
+            <h3>輕文創交換 / 展示</h3>
+            <form class="resource-form" id="creativeForm">
+                <div class="form-item">
+                    <label for="creativeName">文創名稱</label>
+                    <input type="text" id="creativeName" required placeholder="例：手賬貼紙、校園明信片、手工鑰匙扣">
+                </div>
+                <div class="form-item">
+                    <label for="creativeType">文創類型</label>
+                    <select id="creativeType" required>
+                        <option value="" disabled selected>請選擇類型</option>
+                        <option value="紙質文創">紙質文創（明信片/貼紙）</option>
+                        <option value="手工飾品">手工飾品（鑰匙扣/徽章）</option>
+                        <option value="桌面擺件">桌面擺件</option>
+                        <option value="其他文創">其他文創</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="creativeWay">選擇方式</label>
+                    <select id="creativeWay" required>
+                        <option value="" disabled selected>請選擇方式</option>
+                        <option value="展示">展示</option>
+                        <option value="交換">交換</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="creativeLocation">校園地點</label>
+                    <input type="text" id="creativeLocation" required placeholder="例：校園文創角、藝術樓1樓、食堂旁擺攤點">
+                </div>
+                <div class="form-item">
+                    <label for="creativeRemarks">備註</label>
+                    <textarea id="creativeRemarks" placeholder="補充文創材質、尺寸、交換要求等"></textarea>
+                </div>
+                <div class="form-item form-submit">
+                    <button type="submit" class="nav-btn">發布文創資源</button>
+                </div>
+            </form>
+            <!-- 文創資源列表 -->
+            <h4 style="color: #4A8A57; margin-bottom: 1rem; font-size: 1.2rem;">實時發布的文創資源</h4>
+            <div class="resource-list" id="creativeList">
+                <!-- 默認示例 -->
+                <div class="resource-item">
+                    <p><span>文創名稱：</span>校園風明信片套裝</p>
+                    <p><span>類型/方式：</span>紙質文創 / 交換</p>
+                    <p><span>校園地點：</span>校園文創角</p>
+                    <button class="nav-btn contact-btn">聯繫對接</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 表單提交交互JS - 實時添加資源到列表，重置表單 -->
+    <script>
+        // 文具表單提交
+        const stationeryForm = document.getElementById('stationeryForm');
+        const stationeryList = document.getElementById('stationeryList');
+        stationeryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('stationeryName').value;
+            const type = document.getElementById('stationeryType').value;
+            const status = document.getElementById('stationeryStatus').value;
+            const way = document.getElementById('stationeryWay').value;
+            const location = document.getElementById('stationeryLocation').value;
+            const remarks = document.getElementById('stationeryRemarks').value;
+            // 創建資源項
+            const item = document.createElement('div');
+            item.className = 'resource-item';
+            item.innerHTML = `
+                <p><span>文具名稱：</span>${name}</p>
+                <p><span>類型/狀態：</span>${type} / ${status}</p>
+                <p><span>方式：</span>${way}</p>
+                <p><span>校園地點：</span>${location}</p>
+                ${remarks ? `<p><span>備註：</span>${remarks}</p>` : ''}
+                <button class="nav-btn contact-btn">聯繫對接</button>
+            `;
+            stationeryList.prepend(item);
+            stationeryForm.reset();
+            alert('文具資源發布成功！');
+        });
+
+        // 學習素材表單提交
+        const noteForm = document.getElementById('noteForm');
+        const noteList = document.getElementById('noteList');
+        noteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('noteName').value;
+            const subject = document.getElementById('noteSubject').value;
+            const intro = document.getElementById('noteIntro').value;
+            const location = document.getElementById('noteLocation').value;
+            const remarks = document.getElementById('noteRemarks').value;
+            // 創建資源項
+            const item = document.createElement('div');
+            item.className = 'resource-item';
+            item.innerHTML = `
+                <p><span>素材名稱：</span>${name}</p>
+                <p><span>年級/科目：</span>${subject}</p>
+                <p><span>介紹：</span>${intro}</p>
+                <p><span>校園地點：</span>${location}</p>
+                ${remarks ? `<p><span>備註：</span>${remarks}</p>` : ''}
+                <button class="nav-btn contact-btn">聯繫對接</button>
+            `;
+            noteList.prepend(item);
+            noteForm.reset();
+            alert('學習素材發布成功！');
+        });
+
+        // 文創表單提交
+        const creativeForm = document.getElementById('creativeForm');
+        const creativeList = document.getElementById('creativeList');
+        creativeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('creativeName').value;
+            const type = document.getElementById('creativeType').value;
+            const way = document.getElementById('creativeWay').value;
+            const location = document.getElementById('creativeLocation').value;
+            const remarks = document.getElementById('creativeRemarks').value;
+            // 創建資源項
+            const item = document.createElement('div');
+            item.className = 'resource-item';
+            item.innerHTML = `
+                <p><span>文創名稱：</span>${name}</p>
+                <p><span>類型/方式：</span>${type} / ${way}</p>
+                <p><span>校園地點：</span>${location}</p>
+                ${remarks ? `<p><span>備註：</span>${remarks}</p>` : ''}
+                <button class="nav-btn contact-btn">聯繫對接</button>
+            `;
+            creativeList.prepend(item);
+            creativeForm.reset();
+            alert('文創資源發布成功！');
+        });
+    </script>
+</body>
+</html>

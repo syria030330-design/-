@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校園專屬輕資源交換網站 - 首頁</title>
+    <!-- 引入可畫甜心體 線上字體鏈接 -->
+    <style>
+        /* 引入可畫甜心體，設置全局字體 */
+        @font-face {
+            font-family: 'KeHuaTianXin';
+            src: url('https://cdn.jsdelivr.net/gh/fonts-archive/KeHuaTianXin/KeHuaTianXin.woff2') format('woff2'),
+                 url('https://cdn.jsdelivr.net/gh/fonts-archive/KeHuaTianXin/KeHuaTianXin.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        /* 全局樣式 - 默認字體改為可畫甜心體，加深青檸奶綠+霧玫紫背景 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'KeHuaTianXin', "Microsoft JhengHei", "思源黑體", sans-serif !important;
+        }
+        body {
+            background-color: #f5faf7;
+            background-image: linear-gradient(180deg, #f5faf7 95%, #C1E2C8 100%); /* 加深青檸奶綠漸變 */
+            color: #333;
+            line-height: 1.8;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        /* 校園風漂浮元素 - 定位不影響主內容，響應式隱藏手機端多餘浮層 */
+        .campus-icon {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.3; /* 輕微提高透明度，搭配加深顏色更協調 */
+            pointer-events: none;
+        }
+        .icon1 { top: 15%; left: 5%; width: 60px; height: 60px; }
+        .icon2 { top: 30%; right: 5%; width: 80px; height: 80px; }
+        .icon3 { bottom: 20%; left: 3%; width: 70px; height: 70px; }
+        .icon4 { bottom: 30%; right: 3%; width: 50px; height: 50px; }
+        /* 校園風波浪裝飾 - 加深青檸奶綠 */
+        .wave {
+            height: 30px;
+            background: linear-gradient(135deg, #C1E2C8 25%, transparent 25%), linear-gradient(225deg, #C1E2C8 25%, transparent 25%);
+            background-size: 30px 30px;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        /* 導航欄 - 加深霧玫紫底+青檸奶綠點綴 */
+        nav {
+            background-color: #E5C2D0; /* 加深霧玫紫 */
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(193, 226, 200, 0.6); /* 加深青檸奶綠陰影 */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid #C1E2C8; /* 加深青檸奶綠底邊 */
+        }
+        .nav-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        /* 導航左：網站名稱 */
+        .nav-logo {
+            flex: 1;
+        }
+        nav h1 {
+            font-size: 1.5rem;
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            position: relative;
+            padding-left: 0.5rem;
+        }
+        nav h1::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: #C1E2C8; /* 加深青檸奶綠 */
+            border-radius: 50%;
+            border: 1px solid #7A4A7A; /* 加深深霧玫紫邊框 */
+        }
+        /* 導航中：進入資源交換按鈕 */
+        .nav-main {
+            flex: 0;
+        }
+        /* 導航右：註冊+登入按鈕（右上角） */
+        .nav-auth {
+            flex: 0;
+            display: flex;
+            gap: 0.8rem;
+        }
+        /* 按鈕通用樣式 - 加深青檸奶綠底+深霧玫紫字/邊框 */
+        .nav-btn {
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            background-color: #C1E2C8; /* 加深青檸奶綠 */
+            border: 2px solid #7A4A7A; /* 加深深霧玫紫邊框 */
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .nav-btn:hover {
+            background-color: #A8D5B0; /* 加深淺青檸奶綠hover */
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(193, 226, 200, 0.9); /* 加深青檸奶綠hover陰影 */
+        }
+        /* 小按鈕（註冊/登入）- 略縮小，适配右上角布局 */
+        .auth-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+        }
+        /* Hero區域 - 加z-index層級，避開漂浮元素，校園感標題 */
+        .hero {
+            padding: 3rem 0 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero h2 {
+            font-size: 2.8rem;
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 3px rgba(193, 226, 200, 0.7); /* 加深青檸奶綠陰影 */
+        }
+        .hero p {
+            font-size: 1.3rem;
+            color: #4A8A57; /* 加深青檸奶綠文字色 */
+            font-weight: 600;
+        }
+        /* 問題描述區 - 加深青檸奶綠邊框+背景漸變 */
+        .problem {
+            background-color: #fff;
+            background-image: linear-gradient(0deg, #fff 90%, #e8f5eb 100%); /* 加深青檸奶綠淺背景 */
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(193, 226, 200, 0.4); /* 加深青檸奶綠陰影 */
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            color: #555;
+            border-left: 5px solid #C1E2C8; /* 加深青檸奶綠左邊框 */
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+        /* 功能介紹 - 3張卡片+校園元素圖標，加深青檸奶綠強化 */
+        .features {
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+        .features-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #C1E2C8; /* 加深青檸奶綠下劃線 */
+            display: inline-block;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background-color: #fff;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(193, 226, 200, 0.4); /* 加深青檸奶綠陰影 */
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid #C1E2C8; /* 加深青檸奶綠頂邊 */
+            border-bottom: 2px solid #C1E2C8; /* 加深青檸奶綠底邊 */
+            position: relative;
+        }
+        /* 功能卡片內置校園小圖標（文具/書本/文件）- 加深配色 */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background-color: #C1E2C8; /* 加深青檸奶綠 */
+            border: 1px solid #7A4A7A; /* 加深深霧玫紫邊框 */
+        }
+        .card:nth-child(1)::before {
+            background: #C1E2C8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%237A4A7A'%3E%3Cpath d='M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 14h-4v4h-2v-4H5v-2h4V7h2v7h4v2z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        .card:nth-child(2)::before {
+            background: #C1E2C8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%237A4A7A'%3E%3Cpath d='M18 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        .card:nth-child(3)::before {
+            background: #C1E2C8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%237A4A7A'%3E%3Cpath d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        /* 卡片hover效果 - 加深青檸奶綠背景 */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(193, 226, 200, 0.6); /* 加深青檸奶綠陰影 */
+            background-color: #e8f5eb; /* 加深青檸奶綠淺背景 */
+        }
+        .card h4 {
+            font-size: 1.3rem;
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+        /* 卡片底部小校園元素裝飾 - 加深青檸奶綠 */
+        .card::after {
+            content: "";
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 18px;
+            height: 18px;
+            opacity: 0.7; /* 提高透明度搭配加深顏色 */
+        }
+        .card:nth-child(1)::after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23C1E2C8'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        .card:nth-child(2)::after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23C1E2C8'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        .card:nth-child(3)::after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%23C1E2C8'%3E%3Cpath d='M17 20c-1.1 0-1.99.9-1.99 2S15.9 24 17 24s2-.9 2-2-.9-2-2-2zm-1-7.98c0-1.49-.91-2.73-2.25-3.24.38-.85.57-1.8.57-2.78 0-2.21-1.79-4-4-4s-4 1.79-4 4c0 .98.19 1.93.57 2.78C6.91 9.29 6 10.53 6 12.02V13h12v-.98zm-6-5.02c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm6.61 11.19L13 15v-2h-2v2l-3.61 1.19c-.45.13-.67.65-.46 1.08.13.45.65.67 1.08.46L10 16.9v1.29c0 .55.45 1 1 1h2c.55 0 1-.45 1-1V16.9l2.09.84c.43.17.95-.01 1.08-.46.21-.43-.01-.95-.46-1.08z'/%3E%3C/svg%3E") no-repeat center;
+        }
+        /* 使用流程 - 三步式+校園元素，加深青檸奶綠強化 */
+        .process {
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+        .process-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #C1E2C8; /* 加深青檸奶綠下劃線 */
+            display: inline-block;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .process-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 1.5rem;
+        }
+        .step {
+            flex: 1;
+            min-width: 250px;
+            background-color: #fff;
+            background-image: linear-gradient(0deg, #fff 95%, #e8f5eb 100%); /* 加深青檸奶綠淺背景 */
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(193, 226, 200, 0.4); /* 加深青檸奶綠陰影 */
+            border: 1px solid #C1E2C8; /* 加深青檸奶綠邊框 */
+            transition: all 0.3s ease;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+        /* 流程步驟前加校園小圖標（書包/搜尋/握手）- 加深配色 */
+        .step::before {
+            content: "";
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            width: 20px;
+            height: 20px;
+            background-color: #C1E2C8; /* 加深青檸奶綠 */
+            border-radius: 50%;
+            background-size: 12px 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 1px solid #7A4A7A; /* 加深深霧玫紫邊框 */
+        }
+        .step:nth-child(1)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A4A7A'%3E%3Cpath d='M18 20c-1.1 0-1.99.9-1.99 2S16.9 24 18 24s2-.9 2-2-.9-2-2-2zm-1-7.98c0-1.49-.91-2.73-2.25-3.24.38-.85.57-1.8.57-2.78 0-2.21-1.79-4-4-4s-4 1.79-4 4c0 .98.19 1.93.57 2.78C6.91 9.29 6 10.53 6 12.02V13h12v-.98zm-6-5.02c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm6.61 11.19L13 15v-2h-2v2l-3.61 1.19c-.45.13-.67.65-.46 1.08.13.45.65.67 1.08.46L10 16.9v1.29c0 .55.45 1 1 1h2c.55 0 1-.45 1-1V16.9l2.09.84c.43.17.95-.01 1.08-.46.21-.43-.01-.95-.46-1.08z'/%3E%3C/svg%3E");
+        }
+        .step:nth-child(2)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A4A7A'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+        }
+        .step:nth-child(3)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237A4A7A'%3E%3Cpath d='M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z'/%3E%3C/svg%3E");
+        }
+        /* 步驟hover效果 - 加深青檸奶綠背景 */
+        .step:hover {
+            background-color: #e8f5eb; /* 加深青檸奶綠淺背景 */
+            box-shadow: 0 5px 12px rgba(193, 226, 200, 0.7); /* 加深青檸奶綠陰影 */
+        }
+        .step span {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            background-color: #C1E2C8; /* 加深青檸奶綠 */
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            border: 2px solid #7A4A7A; /* 加深深霧玫紫邊框 */
+            font-size: 1.1rem;
+        }
+        .step h5 {
+            font-size: 1.1rem;
+            color: #4A8A57; /* 加深青檸奶綠文字色 */
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .step p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        /* 團隊介紹 - 加深青檸奶綠邊框+背景 */
+        .team {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 3px solid #C1E2C8; /* 加深青檸奶綠頂邊 */
+            color: #666;
+            font-weight: 500;
+            background-color: #e8f5eb; /* 加深青檸奶綠淺背景 */
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 -3px 8px rgba(193, 226, 200, 0.4); /* 加深青檸奶綠陰影 */
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+        .team span {
+            color: #7A4A7A; /* 加深深霧玫紫 */
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            background-color: #C1E2C8; /* 加深青檸奶綠 */
+            border-radius: 4px;
+            margin: 0 0.2rem;
+        }
+        /* 響應式調整 - 手機端優化，隱藏多餘漂浮元素，按鈕自適配 */
+        @media (max-width: 768px) {
+            /* 手機端隱藏漂浮校園元素，避免擁擠 */
+            .campus-icon {
+                display: none;
+            }
+            /* 導航欄改為豎排，按鈕滿寬 */
+            .nav-wrap {
+                flex-direction: column;
+                gap: 0.8rem;
+                align-items: center;
+            }
+            .nav-logo, .nav-main, .nav-auth {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-auth {
+                justify-content: center;
+            }
+            /* 字體大小優化 */
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            nav h1 {
+                font-size: 1.2rem;
+            }
+            .features-title, .process-title {
+                font-size: 1.5rem;
+            }
+            .step {
+                min-width: 100%;
+            }
+            .problem {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 校園漂浮元素圖案 - 加深青檸奶綠填充色 -->
+    <svg class="campus-icon icon1" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M18 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+    <svg class="campus-icon icon2" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 14h-4v4h-2v-4H5v-2h4V7h2v7h4v2z"/></svg>
+    <svg class="campus-icon icon3" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M17 20c-1.1 0-1.99.9-1.99 2S15.9 24 17 24s2-.9 2-2-.9-2-2-2zm-1-7.98c0-1.49-.91-2.73-2.25-3.24.38-.85.57-1.8.57-2.78 0-2.21-1.79-4-4-4s-4 1.79-4 4c0 .98.19 1.93.57 2.78C6.91 9.29 6 10.53 6 12.02V13h12v-.98zm-6-5.02c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm6.61 11.19L13 15v-2h-2v2l-3.61 1.19c-.45.13-.67.65-.46 1.08.13.45.65.67 1.08.46L10 16.9v1.29c0 .55.45 1 1 1h2c.55 0 1-.45 1-1V16.9l2.09.84c.43.17.95-.01 1.08-.46.21-.43-.01-.95-.46-1.08z"/></svg>
+    <svg class="campus-icon icon4" viewBox="0 0 24 24" fill="#C1E2C8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+
+    <!-- 導航欄 - 右上角註冊/登入按鈕 + 進入資源交換 + 網站名稱 -->
+    <nav>
+        <div class="container nav-wrap">
+            <div class="nav-logo">
+                <h1>校園專屬輕資源交換網站</h1>
+            </div>
+            <div class="nav-main">
+                <a href="swap.html" class="nav-btn">進入資源交換</a>
+            </div>
+            <div class="nav-auth">
+                <a href="#" class="nav-btn auth-btn">註冊</a>
+                <a href="#" class="nav-btn auth-btn">登入</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero區域 - 大標題+副標 -->
+        <section class="hero">
+            <h2>讓閒置變有用</h2>
+            <p>輕鬆交換共享</p>
+        </section>
+
+        <!-- 校園風青檸奶綠波浪裝飾 -->
+        <div class="wave"></div>
+
+        <!-- 問題描述區 -->
+        <section class="problem">
+            見身邊同學好多文具、筆記閒置浪費，想找精品筆記又冇渠道，就想做個校園專屬平台，讓資源更容易共享。
+        </section>
+
+        <!-- 功能介紹 - 3張卡片+校園元素 -->
+        <section class="features">
+            <h3 class="features-title">核心功能</h3>
+            <div class="feature-cards">
+                <div class="card">
+                    <h4>校園閒置交換</h4>
+                    <p>發布閒置文具，標註交換/互借方式，校園內快速對接，杜絕資源浪費</p>
+                </div>
+                <div class="card">
+                    <h4>精品筆記共享</h4>
+                    <p>分享各科目精品課堂筆記，校園專屬更貼合學習場景，互學互進</p>
+                </div>
+                <div class="card">
+                    <h4>學習素材整合</h4>
+                    <p>整合習題、考點、模板等學習素材，一站式查找，節省找資料時間</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 使用流程 - 三步式+校園小圖標 -->
+        <section class="process">
+            <h3 class="process-title">使用流程</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <span>1</span>
+                    <h5>填寫信息，一鍵發布</h5>
+                    <p>打開首頁點進資源交換頁，根據需求填寫文具/筆記的簡單信息，一鍵發布</p>
+                </div>
+                <div class="step">
+                    <span>2</span>
+                    <h5>瀏覽列表，查找資源</h5>
+                    <p>瀏覽頁面的實時資源列表，找到自己需要的文具或學習素材</p>
+                </div>
+                <div class="step">
+                    <span>3</span>
+                    <h5>校園線下，對接共享</h5>
+                    <p>按資源裡的校園地點，線下和同學對接交換、互借或者共享</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 團隊介紹 -->
+        <section class="team">
+            Made by <span>江欣芙</span>、<span>溫子瑤</span> | 校園輕資源交換MVP原型
+        </section>
+    </div>
+
+    <script>
+        console.log("校園專屬輕資源交換網站 - 首頁加載完成");
+        console.log("主色調：加深霧玫紫 #E5C2D0 | 加深青檸奶绿 #C1E2C8（可畫甜心體+校園元素版）");
+    </script>
+</body>
+</html>
